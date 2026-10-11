@@ -9,4 +9,6 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("select p from Product p where p.price > ?1")
     List<Product> findExpensive(BigDecimal threshold);
+
+    List<Product> findByCategory_Id(Long categoryId);
 }

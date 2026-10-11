@@ -14,6 +14,12 @@ class PricingServiceTest {
     }
 
     @Test
+    void promoDiscountIsRoundedToCents() {
+        PricingService pricing = new PricingService(0);
+        assertThat(pricing.promoDiscount(new BigDecimal("17.82"), 10)).isEqualByComparingTo("1.78");
+    }
+
+    @Test
     void readsDiscountFromCorpConfig() {
         PricingService pricing = new PricingService();
         assertThat(pricing.total(new BigDecimal("100.00"), 1)).isEqualByComparingTo("90.00");

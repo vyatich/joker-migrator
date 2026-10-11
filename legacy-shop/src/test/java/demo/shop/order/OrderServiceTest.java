@@ -5,6 +5,7 @@ import demo.shop.customer.CustomerService;
 import demo.shop.inventory.InventoryService;
 import demo.shop.product.Product;
 import demo.shop.product.ProductService;
+import demo.shop.promo.PromoCodeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,6 +42,8 @@ class OrderServiceTest {
     @Mock
     PricingService pricing;
     @Mock
+    PromoCodeService promoCodes;
+    @Mock
     DeliveryClient delivery;
     @Mock
     ApplicationEventPublisher events;
@@ -50,7 +53,7 @@ class OrderServiceTest {
     @BeforeEach
     void setUp() {
         ShopProperties properties = new ShopProperties(2, Duration.ofDays(2));
-        service = new OrderService(orders, customers, products, inventory, pricing, delivery, events, properties);
+        service = new OrderService(orders, customers, products, inventory, pricing, promoCodes, delivery, events, properties);
     }
 
     @Test

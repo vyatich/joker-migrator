@@ -40,6 +40,10 @@ public class InventoryService {
         get(productId).reserve(quantity);
     }
 
+    public void commit(long productId, int quantity) {
+        stock.findById(productId).ifPresent(item -> item.commit(quantity));
+    }
+
     public void release(long productId, int quantity) {
         stock.findById(productId).ifPresent(item -> item.release(quantity));
     }

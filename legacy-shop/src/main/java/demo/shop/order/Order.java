@@ -26,6 +26,8 @@ public class Order {
     private OrderStatus status;
     private Instant placedAt;
     private BigDecimal delivery = BigDecimal.ZERO;
+    private String promoCode;
+    private BigDecimal promoDiscount = BigDecimal.ZERO;
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderColumn(name = "position")
     private List<OrderLine> lines = new ArrayList<>();
@@ -43,11 +45,28 @@ public class Order {
         lines.add(new OrderLine(this, productId, productName, quantity, amount));
     }
 
+    public void applyPromo(String code, BigDecimal discount) {
+        this.promoCode = code;
+        this.promoDiscount = discount;
+    }
+
+    public void markPaid() {
+        moveTo(OrderStatus.PAID, OrderStatus.PLACED);
+    }
+
+    public void markShipped() {
+        moveTo(OrderStatus.SHIPPED, OrderStatus.PAID);
+    }
+
     public void expire() {
-        if (status != OrderStatus.PLACED) {
-            throw new IllegalStateException("Order " + id + " is " + status + ", only placed orders expire");
+        moveTo(OrderStatus.EXPIRED, OrderStatus.PLACED);
+    }
+
+    private void moveTo(OrderStatus next, OrderStatus required) {
+        if (status != required) {
+            throw new IllegalStateException("Order " + id + " is " + status + ", expected " + required);
         }
-        status = OrderStatus.EXPIRED;
+        status = next;
     }
 
     public BigDecimal getItemsTotal() {
@@ -55,7 +74,7 @@ public class Order {
     }
 
     public BigDecimal getTotal() {
-        return getItemsTotal().add(delivery);
+        return getItemsTotal().subtract(promoDiscount).add(delivery);
     }
 
     public Long getId() {
@@ -80,6 +99,14 @@ public class Order {
 
     public void setDelivery(BigDecimal delivery) {
         this.delivery = delivery;
+    }
+
+    public String getPromoCode() {
+        return promoCode;
+    }
+
+    public BigDecimal getPromoDiscount() {
+        return promoDiscount;
     }
 
     public List<OrderLine> getLines() {

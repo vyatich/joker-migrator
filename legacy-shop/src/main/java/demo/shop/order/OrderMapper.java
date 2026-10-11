@@ -18,6 +18,8 @@ final class OrderMapper {
             .status(OrderStatusDto.fromValue(order.getStatus().name()))
             .lines(order.getLines().stream().map(OrderMapper::toDto).collect(Collectors.toList()))
             .itemsTotal(order.getItemsTotal())
+            .promoCode(order.getPromoCode())
+            .promoDiscount(order.getPromoDiscount())
             .delivery(order.getDelivery())
             .total(order.getTotal())
             .placedAt(order.getPlacedAt().atOffset(ZoneOffset.UTC));

@@ -48,6 +48,13 @@ public class StockItem {
         reserved += quantity;
     }
 
+    /**
+     * Reserved items have left the warehouse: they are neither reserved nor available any more.
+     */
+    void commit(int quantity) {
+        reserved -= Math.min(quantity, reserved);
+    }
+
     void release(int quantity) {
         int released = Math.min(quantity, reserved);
         reserved -= released;

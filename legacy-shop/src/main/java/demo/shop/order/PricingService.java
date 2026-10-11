@@ -21,6 +21,13 @@ public class PricingService {
         this.discountPercent = discountPercent;
     }
 
+    /**
+     * Promo discount on the items total, rounded to cents.
+     */
+    public BigDecimal promoDiscount(BigDecimal itemsTotal, int percent) {
+        return itemsTotal.multiply(BigDecimal.valueOf(percent)).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
+    }
+
     public BigDecimal total(BigDecimal unitPrice, int quantity) {
         BigDecimal gross = unitPrice.multiply(BigDecimal.valueOf(quantity));
         BigDecimal discount = gross.multiply(BigDecimal.valueOf(discountPercent)).divide(BigDecimal.valueOf(100));

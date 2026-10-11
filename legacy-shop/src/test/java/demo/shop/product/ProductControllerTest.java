@@ -3,6 +3,7 @@ package demo.shop.product;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import demo.shop.api.model.NewProductDto;
 import demo.shop.config.SecurityConfig;
+import demo.shop.review.ReviewService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -21,6 +22,7 @@ import java.util.List;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -36,6 +38,8 @@ class ProductControllerTest {
     ObjectMapper mapper;
     @MockBean
     ProductService products;
+    @MockBean
+    ReviewService reviews;
 
     static Product product(long id, String name, String price) {
         Product product = new Product(name, new BigDecimal(price));
@@ -66,7 +70,7 @@ class ProductControllerTest {
     @Test
     @WithMockUser
     void createsProduct() throws Exception {
-        when(products.create(eq("Tea"), any())).thenReturn(product(3, "Tea", "4.50"));
+        when(products.create(eq("Tea"), any(), isNull())).thenReturn(product(3, "Tea", "4.50"));
         String body = mapper.writeValueAsString(new NewProductDto().name("Tea").price(new BigDecimal("4.50")));
         mvc.perform(post("/api/products").contentType(MediaType.APPLICATION_JSON).content(body))
             .andExpect(status().isCreated())

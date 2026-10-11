@@ -1,6 +1,7 @@
 package demo.shop.order;
 
 import demo.shop.config.SecurityConfig;
+import demo.shop.history.OrderHistoryService;
 import demo.shop.inventory.InsufficientStockException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import java.time.Instant;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -33,6 +35,8 @@ class OrderControllerTest {
     MockMvc mvc;
     @MockBean
     OrderService orders;
+    @MockBean
+    OrderHistoryService history;
 
     @Test
     void placesOrder() throws Exception {
@@ -40,7 +44,7 @@ class OrderControllerTest {
         order.addLine(7L, "Laptop", 1, new BigDecimal("1349.10"));
         order.setDelivery(new BigDecimal("4.99"));
         ReflectionTestUtils.setField(order, "id", 100L);
-        when(orders.place(eq(5L), anyList())).thenReturn(order);
+        when(orders.place(eq(5L), anyList(), isNull())).thenReturn(order);
 
         mvc.perform(post("/api/orders").contentType(MediaType.APPLICATION_JSON).content(ONE_LAPTOP))
             .andExpect(status().isCreated())
@@ -53,7 +57,7 @@ class OrderControllerTest {
 
     @Test
     void answersConflictWhenStockIsShort() throws Exception {
-        when(orders.place(eq(5L), anyList())).thenThrow(new InsufficientStockException(7L, 1, 0));
+        when(orders.place(eq(5L), anyList(), isNull())).thenThrow(new InsufficientStockException(7L, 1, 0));
 
         mvc.perform(post("/api/orders").contentType(MediaType.APPLICATION_JSON).content(ONE_LAPTOP))
             .andExpect(status().isConflict())
