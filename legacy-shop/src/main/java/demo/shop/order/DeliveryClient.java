@@ -28,13 +28,13 @@ public class DeliveryClient {
             config.getLong("shop.delivery.timeout-ms", 2000));
     }
 
-    long timeoutMillis() {
+    public long timeoutMillis() {
         return http.getTimeoutMillis();
     }
 
-    public BigDecimal quote(long productId, int quantity) {
+    public BigDecimal quote(long customerId, int items) {
         try {
-            return new BigDecimal(http.get("/quotes?product=" + productId + "&quantity=" + quantity).trim());
+            return new BigDecimal(http.get("/quotes?customer=" + customerId + "&items=" + items).trim());
         } catch (IOException | NumberFormatException e) {
             log.warn("Delivery quote failed after {} ms, using flat rate: {}", http.getTimeoutMillis(), e.getMessage());
             return FLAT_RATE;
