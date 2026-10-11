@@ -11,3 +11,6 @@ out/
 
 # skill working state
 .migrate/
+
+# file-based Maven repository that corp-commons publishes to
+corp-repo/

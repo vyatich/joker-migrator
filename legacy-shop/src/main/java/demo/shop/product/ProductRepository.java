@@ -1,0 +1,12 @@
+package demo.shop.product;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.math.BigDecimal;
+import java.util.List;
+
+public interface ProductRepository extends JpaRepository<Product, Long> {
+    @Query("select p from Product p where p.price > ?1")
+    List<Product> findExpensive(BigDecimal threshold);
+}
