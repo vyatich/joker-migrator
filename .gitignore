@@ -1,0 +1,13 @@
+# build output
+target/
+build/
+out/
+.gradle/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# skill working state
+.migrate/
