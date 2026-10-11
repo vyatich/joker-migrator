@@ -1,5 +1,8 @@
 package demo.shop.inventory;
 
+import lombok.Getter;
+
+@Getter
 public class InsufficientStockException extends RuntimeException {
     private final long productId;
     private final int requested;
@@ -10,17 +13,5 @@ public class InsufficientStockException extends RuntimeException {
         this.productId = productId;
         this.requested = requested;
         this.available = available;
-    }
-
-    public long getProductId() {
-        return productId;
-    }
-
-    public int getRequested() {
-        return requested;
-    }
-
-    public int getAvailable() {
-        return available;
     }
 }

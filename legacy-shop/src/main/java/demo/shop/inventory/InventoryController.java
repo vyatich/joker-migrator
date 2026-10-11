@@ -3,16 +3,14 @@ package demo.shop.inventory;
 import demo.shop.api.InventoryApi;
 import demo.shop.api.model.StockDto;
 import demo.shop.api.model.StockUpdateDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequiredArgsConstructor
 public class InventoryController implements InventoryApi {
     private final InventoryService inventory;
-
-    public InventoryController(InventoryService inventory) {
-        this.inventory = inventory;
-    }
 
     @Override
     public ResponseEntity<StockDto> getStock(Long productId) {

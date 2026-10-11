@@ -1,5 +1,6 @@
 package demo.shop.product;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,13 +10,10 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class ProductService {
     private final ProductRepository products;
-
-    public ProductService(ProductRepository products) {
-        this.products = products;
-    }
 
     public List<Product> findAll() {
         return products.findAll();

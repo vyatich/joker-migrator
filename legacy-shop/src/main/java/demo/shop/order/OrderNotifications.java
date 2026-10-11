@@ -7,18 +7,25 @@ import org.springframework.transaction.event.TransactionalEventListener;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Tells the customer about a placed order once it is safely committed. In the demo the
- * notification is a log line.
+ * Tells the customer about a placed order once it is safely committed.
  */
 @Component
 public class OrderNotifications {
     private static final CorpLogger log = CorpLogger.getLogger(OrderNotifications.class);
 
+    private final NotificationSender sender;
     private final AtomicInteger sent = new AtomicInteger();
+
+    public OrderNotifications(NotificationSender sender) {
+        this.sender = sender;
+    }
 
     @TransactionalEventListener
     public void onOrderPlaced(OrderPlacedEvent event) {
-        log.info("Notify customer {}: order {} placed, total {}", event.getCustomerId(), event.getOrderId(), event.getTotal());
+        String text = "order " + event.getOrderId() + " placed, total " + event.getTotal();
+        sender.send(event.getCustomerId(), text).addCallback(
+            delivered -> log.info("Notification for order {} delivered: {}", event.getOrderId(), delivered),
+            failure -> log.error("Notification for order " + event.getOrderId() + " failed", failure));
         sent.incrementAndGet();
     }
 

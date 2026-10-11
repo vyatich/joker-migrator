@@ -85,6 +85,14 @@ class ShopApplicationTest {
     }
 
     @Test
+    void keepsTrailingSlashUrlsWorking() throws Exception {
+        // version 1 of the mobile app calls the catalog with a trailing slash and cannot be updated
+        mvc.perform(get("/api/products/").with(httpBasic("user", "password")))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$[0].name").exists());
+    }
+
+    @Test
     void healthIsPublicAndShowsDeliverySettings() throws Exception {
         mvc.perform(get("/actuator/health"))
             .andExpect(status().isOk())
