@@ -41,14 +41,19 @@ skill/
 
    > Обнови legacy-shop: Spring Boot 4, Java 25 и наша corp-commons 2.0.0 (она лежит в ../corp-repo, описание изменений — ../corp-commons/MIGRATION.md). Сборка и тесты должны остаться зелёными.
 
-Запустить только рецепты, без агента:
+Скрипты скилла можно запускать и без агента (нужен JDK 17+; JDK для самой сборки они выбирают сами по версии Gradle):
 
 ```bash
-cd legacy-shop
-JAVA_HOME=<jdk-11> ./gradlew rewriteRun --init-script ../skill/openrewrite-migrate/scripts/rewrite-init.gradle \
-  -Drewrite.activeRecipe=org.openrewrite.java.spring.boot4.UpgradeSpringBoot_4_0,org.openrewrite.java.migrate.UpgradeToJava25,com.corp.commons.MigrateToCorpCommons2 \
-  -Drewrite.recipeArtifactCoordinates=org.openrewrite.recipe:rewrite-spring:6.37.1,org.openrewrite.recipe:rewrite-migrate-java:3.42.1,com.corp:corp-commons-recipes:2.0.0 \
-  -Dorg.gradle.jvmargs=-Xmx2g --no-daemon
+S=skill/openrewrite-migrate/scripts
+# рецепты Spring Boot, Java и внутренний рецепт corp-commons — один прогон и коммит
+java $S/RunRecipes.java --project legacy-shop \
+  --recipes org.openrewrite.java.spring.boot4.UpgradeSpringBoot_4_0,org.openrewrite.java.migrate.UpgradeToJava25,com.corp.commons.MigrateToCorpCommons2 \
+  --artifacts org.openrewrite.recipe:rewrite-spring:6.37.1,org.openrewrite.recipe:rewrite-migrate-java:3.42.1,com.corp:corp-commons-recipes:2.0.0 \
+  --commit "recipe: Spring Boot 2.7 -> 4.0, Java 11 -> 25, corp-commons 2.0"
+# сборка: вместо лога на сотни строк — JSON с ошибками, сгруппированными по причине
+java $S/BuildReport.java --project legacy-shop --task compile
+# pre-commit-хук, который не даёт закоммитить удалённые тесты, @Disabled и убранные проверки
+java $S/CheckDiff.java --install-hook
 ```
 
 После этого остаётся хвост: настройка генератора OpenAPI, Jackson 3, изменения API Spring 7, таймауты corp-commons (`long` → `Duration`) и URL со слешем в конце, который ловит только тест.
