@@ -1,0 +1,28 @@
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: com.corp.commons.MigrateToCorpCommons2
+displayName: Migrate to corp-commons 2.0
+description: >-
+  Renames from corp-commons 1.x to 2.0: package com.corp.commons.util → com.corp.commons.core,
+  CorpLogger → CorpLog, CorpContext.getConfig() → config(), and the dependency version 1.x → 2.0.0.
+  Does not cover CorpHttpClient timeouts (long milliseconds → Duration): see MIGRATION.md.
+tags:
+  - corp-commons
+recipeList:
+  - org.openrewrite.java.ChangePackage:
+      oldPackageName: com.corp.commons.util
+      newPackageName: com.corp.commons.core
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.corp.commons.core.CorpLogger
+      newFullyQualifiedTypeName: com.corp.commons.core.CorpLog
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: com.corp.commons.core.CorpContext getConfig()
+      newMethodName: config
+  - org.openrewrite.gradle.UpgradeDependencyVersion:
+      groupId: com.corp
+      artifactId: corp-commons
+      newVersion: 2.0.0
+  - org.openrewrite.maven.UpgradeDependencyVersion:
+      groupId: com.corp
+      artifactId: corp-commons
+      newVersion: 2.0.0
