@@ -2,7 +2,7 @@ plugins {
     java
     id("org.springframework.boot") version "4.0.8"
     id("io.spring.dependency-management") version "1.1.7"
-    id("org.openapi.generator") version "6.6.0"
+    id("org.openapi.generator") version "7.26.0"
 }
 
 group = "demo"
@@ -34,13 +34,12 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("com.corp:corp-commons:2.0.0")
-    implementation("jakarta.servlet:jakarta.servlet-api:6.0.0")
     compileOnly("org.projectlombok:lombok:1.18.48")
     annotationProcessor("org.projectlombok:lombok:1.18.48")
     runtimeOnly("com.h2database:h2")
-    testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test:4.0.8")
+    testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test:4.0.8")
+    testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
     testImplementation("org.springframework.boot:spring-boot-starter-security-test")
 }
 
@@ -48,7 +47,7 @@ dependencies {
 openApiGenerate {
     generatorName.set("spring")
     inputSpec.set("$projectDir/src/main/openapi/shop-api.yaml")
-    outputDir.set("$buildDir/generated/openapi")
+    outputDir.set(layout.buildDirectory.dir("generated/openapi"))
     apiPackage.set("demo.shop.api")
     modelPackage.set("demo.shop.api.model")
     modelNameSuffix.set("Dto")
@@ -63,7 +62,8 @@ openApiGenerate {
             "annotationLibrary" to "none",
             "dateLibrary" to "java8",
             "hideGenerationTimestamp" to "true",
-            "useSpringBoot3" to "false"
+            "useSpringBoot4" to "true",
+            "useJackson3" to "true"
         )
     )
 }
@@ -71,7 +71,7 @@ openApiGenerate {
 sourceSets {
     main {
         java {
-            srcDir("$buildDir/generated/openapi/src/main/java")
+            srcDir(layout.buildDirectory.dir("generated/openapi/src/main/java"))
         }
     }
 }
