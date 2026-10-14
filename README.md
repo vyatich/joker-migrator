@@ -12,10 +12,12 @@ legacy-shop/      сервис «до миграции»: Spring Boot 2.7.18, Ja
                   71 класс, 60 тестов
 corp-commons/     вымышленная «внутренняя» библиотека: v1, v2 с ломающими изменениями
                   и recipes — рецепт миграции на 2.0, который выпускает команда библиотеки
-skill/
-  openrewrite-migrate/         скилл миграции: SKILL.md, справочники, init-скрипт для Gradle
-  openrewrite-recipe-author/   бонус: скилл для команд библиотек — пишет и публикует рецепты
 ```
+
+Скиллы живут в отдельных репозиториях:
+
+- [openrewrite-migrate](https://github.com/vyatich/openrewrite-migrate) — скилл миграции: SKILL.md, справочники, скрипты;
+- [openrewrite-recipe-author](https://github.com/vyatich/openrewrite-recipe-author) — бонус: скилл для команд библиотек, пишет и публикует рецепты.
 
 Ветка `step-0` — состояние до миграции.
 
@@ -37,14 +39,20 @@ skill/
    JAVA_HOME=<jdk-11> ./gradlew build
    ```
 
-3. Подключить скилл к coding-агенту. Для Claude Code — скопировать `skill/openrewrite-migrate` в `.claude/skills/` проекта или в `~/.claude/skills/`; другие агенты с поддержкой формата SKILL.md подключают папку так же. И дать задачу:
+3. Подключить скилл к coding-агенту. Для Claude Code:
+
+   ```bash
+   git clone https://github.com/vyatich/openrewrite-migrate.git ~/.claude/skills/openrewrite-migrate
+   ```
+
+   (или в `.claude/skills/` проекта; другие агенты с поддержкой формата SKILL.md подключают папку так же). И дать задачу:
 
    > Обнови legacy-shop: Spring Boot 4, Java 25 и наша corp-commons 2.0.0 (она лежит в ../corp-repo, описание изменений — ../corp-commons/MIGRATION.md). Сборка и тесты должны остаться зелёными.
 
 Скрипты скилла можно запускать и без агента (нужен JDK 17+; JDK для самой сборки они выбирают сами по версии Gradle):
 
 ```bash
-S=skill/openrewrite-migrate/scripts
+S=~/.claude/skills/openrewrite-migrate/scripts
 # рецепты Spring Boot, Java и внутренний рецепт corp-commons — один прогон и коммит
 java $S/RunRecipes.java --project legacy-shop \
   --recipes org.openrewrite.java.spring.boot4.UpgradeSpringBoot_4_0,org.openrewrite.java.migrate.UpgradeToJava25,com.corp.commons.MigrateToCorpCommons2 \
@@ -75,6 +83,7 @@ java $S/CheckDiff.java --install-hook
 
 - Telegram: https://t.me/jvmbrain
 - YouTube: https://www.youtube.com/@jvmbrain
+- Скиллы: https://github.com/vyatich/openrewrite-migrate, https://github.com/vyatich/openrewrite-recipe-author
 
 ## Лицензия
 

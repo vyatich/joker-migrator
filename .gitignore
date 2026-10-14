@@ -15,6 +15,4 @@ out/
 # file-based Maven repository that corp-commons publishes to
 corp-repo/
 
-# skill test runs
-skill/*-workspace/
 *.log
