@@ -1,9 +1,9 @@
 package demo.shop.payment;
 
-import com.corp.commons.util.CorpConfig;
-import com.corp.commons.util.CorpContext;
-import com.corp.commons.util.CorpHttpClient;
-import com.corp.commons.util.CorpLogger;
+import com.corp.commons.core.CorpConfig;
+import com.corp.commons.core.CorpContext;
+import com.corp.commons.core.CorpHttpClient;
+import com.corp.commons.core.CorpLog;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -15,14 +15,14 @@ import java.math.BigDecimal;
  */
 @Component
 public class PaymentClient {
-    private static final CorpLogger log = CorpLogger.getLogger(PaymentClient.class);
+    private static final CorpLog log = CorpLog.getLogger(PaymentClient.class);
 
     private final CorpHttpClient http;
     private final boolean fake;
     private final BigDecimal fakeLimit;
 
     public PaymentClient() {
-        CorpConfig config = CorpContext.current().getConfig();
+        CorpConfig config = CorpContext.current().config();
         this.http = new CorpHttpClient(
             config.getString("shop.payment.base-url", "http://localhost:8082"),
             config.getLong("shop.payment.timeout-ms", 3000));

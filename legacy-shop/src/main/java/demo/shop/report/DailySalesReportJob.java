@@ -1,6 +1,6 @@
 package demo.shop.report;
 
-import com.corp.commons.util.CorpLogger;
+import com.corp.commons.core.CorpLog;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Component
 @RequiredArgsConstructor
 public class DailySalesReportJob {
-    private static final CorpLogger log = CorpLogger.getLogger(DailySalesReportJob.class);
+    private static final CorpLog log = CorpLog.getLogger(DailySalesReportJob.class);
 
     private final SalesReportService reports;
     private final Clock clock;

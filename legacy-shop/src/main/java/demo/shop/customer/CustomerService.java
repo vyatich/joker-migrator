@@ -1,6 +1,6 @@
 package demo.shop.customer;
 
-import com.corp.commons.util.CorpLogger;
+import com.corp.commons.core.CorpLog;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,7 +11,7 @@ import java.time.Instant;
 @Service
 @Transactional(readOnly = true)
 public class CustomerService {
-    private static final CorpLogger log = CorpLogger.getLogger(CustomerService.class);
+    private static final CorpLog log = CorpLog.getLogger(CustomerService.class);
 
     private final CustomerRepository customers;
 

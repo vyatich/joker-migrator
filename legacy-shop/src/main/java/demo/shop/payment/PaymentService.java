@@ -1,6 +1,6 @@
 package demo.shop.payment;
 
-import com.corp.commons.util.CorpLogger;
+import com.corp.commons.core.CorpLog;
 import demo.shop.history.OrderHistoryService;
 import demo.shop.order.Order;
 import demo.shop.order.OrderPaidEvent;
@@ -19,7 +19,7 @@ import java.time.Instant;
 @RequiredArgsConstructor
 @Transactional
 public class PaymentService {
-    private static final CorpLogger log = CorpLogger.getLogger(PaymentService.class);
+    private static final CorpLog log = CorpLog.getLogger(PaymentService.class);
 
     private final OrderService orders;
     private final PaymentRepository payments;

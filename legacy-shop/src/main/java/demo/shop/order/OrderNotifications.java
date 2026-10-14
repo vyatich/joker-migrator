@@ -1,6 +1,6 @@
 package demo.shop.order;
 
-import com.corp.commons.util.CorpLogger;
+import com.corp.commons.core.CorpLog;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionalEventListener;
 
@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 @Component
 public class OrderNotifications {
-    private static final CorpLogger log = CorpLogger.getLogger(OrderNotifications.class);
+    private static final CorpLog log = CorpLog.getLogger(OrderNotifications.class);
 
     private final NotificationSender sender;
     private final AtomicInteger sent = new AtomicInteger();

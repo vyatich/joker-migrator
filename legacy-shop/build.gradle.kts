@@ -1,7 +1,7 @@
 plugins {
     java
-    id("org.springframework.boot") version "2.7.18"
-    id("io.spring.dependency-management") version "1.0.15.RELEASE"
+    id("org.springframework.boot") version "4.0.8"
+    id("io.spring.dependency-management") version "1.1.7"
     id("org.openapi.generator") version "6.6.0"
 }
 
@@ -9,13 +9,13 @@ group = "demo"
 version = "1.0.0-SNAPSHOT"
 
 tasks.wrapper {
-    gradleVersion = "6.8.3"
+    gradleVersion = "9.1.0"
     distributionType = Wrapper.DistributionType.BIN
 }
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(11))
+        languageVersion.set(JavaLanguageVersion.of(25))
     }
 }
 
@@ -28,17 +28,20 @@ repositories {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-webmvc")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
-    implementation("com.corp:corp-commons:1.0.0")
-    compileOnly("org.projectlombok:lombok:1.18.24")
-    annotationProcessor("org.projectlombok:lombok:1.18.24")
+    implementation("com.corp:corp-commons:2.0.0")
+    implementation("jakarta.servlet:jakarta.servlet-api:6.0.0")
+    compileOnly("org.projectlombok:lombok:1.18.48")
+    annotationProcessor("org.projectlombok:lombok:1.18.48")
     runtimeOnly("com.h2database:h2")
+    testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test:4.0.8")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.springframework.security:spring-security-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test:4.0.8")
+    testImplementation("org.springframework.boot:spring-boot-starter-security-test")
 }
 
 // API first: controller interfaces and DTOs are generated from the contract

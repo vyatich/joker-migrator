@@ -37,7 +37,7 @@ class SalesReportServiceTest {
         assertThat(report.getRevenue()).isEqualByComparingTo("1572.75");
         assertThat(report.getTopProducts()).extracting(ProductSales::getProductName)
             .containsExactly("Coffee", "Headphones", "Laptop");
-        assertThat(report.getTopProducts().get(0).getQuantity()).isEqualTo(5);
+        assertThat(report.getTopProducts().getFirst().getQuantity()).isEqualTo(5);
     }
 
     @Test

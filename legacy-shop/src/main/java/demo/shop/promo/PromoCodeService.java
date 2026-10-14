@@ -1,6 +1,6 @@
 package demo.shop.promo;
 
-import com.corp.commons.util.CorpLogger;
+import com.corp.commons.core.CorpLog;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import java.util.Locale;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class PromoCodeService {
-    private static final CorpLogger log = CorpLogger.getLogger(PromoCodeService.class);
+    private static final CorpLog log = CorpLog.getLogger(PromoCodeService.class);
 
     private final PromoCodeRepository codes;
     private final Clock clock;

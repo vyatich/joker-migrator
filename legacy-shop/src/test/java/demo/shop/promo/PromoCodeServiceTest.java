@@ -46,7 +46,7 @@ class PromoCodeServiceTest {
     void refusesMalformedCodes() {
         ResponseStatusException e = catchThrowableOfType(
             () -> codes.create("no spaces!", 15, LocalDate.of(2026, 11, 30)), ResponseStatusException.class);
-        assertThat(e.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(e.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
     @Test
@@ -56,6 +56,6 @@ class PromoCodeServiceTest {
 
         assertThat(codes.discountPercent("autumn15")).isEqualTo(15);
         ResponseStatusException e = catchThrowableOfType(() -> codes.discountPercent("summer"), ResponseStatusException.class);
-        assertThat(e.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(e.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 }

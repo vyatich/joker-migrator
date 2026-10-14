@@ -1,6 +1,6 @@
 package demo.shop.order;
 
-import com.corp.commons.util.CorpLogger;
+import com.corp.commons.core.CorpLog;
 import demo.shop.config.ShopProperties;
 import demo.shop.customer.CustomerService;
 import demo.shop.inventory.InventoryService;
@@ -20,7 +20,7 @@ import java.util.List;
 @Service
 @Transactional
 public class OrderService {
-    private static final CorpLogger log = CorpLogger.getLogger(OrderService.class);
+    private static final CorpLog log = CorpLog.getLogger(OrderService.class);
 
     private final OrderRepository orders;
     private final CustomerService customers;

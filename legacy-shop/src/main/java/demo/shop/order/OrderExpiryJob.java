@@ -1,6 +1,6 @@
 package demo.shop.order;
 
-import com.corp.commons.util.CorpLogger;
+import com.corp.commons.core.CorpLog;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -8,7 +8,7 @@ import java.time.Instant;
 
 @Component
 public class OrderExpiryJob {
-    private static final CorpLogger log = CorpLogger.getLogger(OrderExpiryJob.class);
+    private static final CorpLog log = CorpLog.getLogger(OrderExpiryJob.class);
 
     private final OrderService orders;
 

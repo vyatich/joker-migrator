@@ -1,15 +1,14 @@
 package demo.shop.web;
 
-import com.corp.commons.util.CorpLogger;
 import org.slf4j.MDC;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import com.corp.commons.core.CorpLog;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -21,7 +20,7 @@ import java.util.UUID;
 public class RequestLoggingFilter extends OncePerRequestFilter {
     static final String HEADER = "X-Correlation-Id";
 
-    private static final CorpLogger log = CorpLogger.getLogger(RequestLoggingFilter.class);
+    private static final CorpLog log = CorpLog.getLogger(RequestLoggingFilter.class);
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)

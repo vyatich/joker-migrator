@@ -1,6 +1,6 @@
 package demo.shop.catalog;
 
-import com.corp.commons.util.CorpLogger;
+import com.corp.commons.core.CorpLog;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class CategoryService {
-    private static final CorpLogger log = CorpLogger.getLogger(CategoryService.class);
+    private static final CorpLog log = CorpLog.getLogger(CategoryService.class);
 
     private final CategoryRepository categories;
 

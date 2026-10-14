@@ -7,7 +7,7 @@ import demo.shop.product.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -56,13 +56,13 @@ class ReviewServiceTest {
 
         ResponseStatusException e = catchThrowableOfType(
             () -> reviews.add(productId, ada, 1, "Changed my mind"), ResponseStatusException.class);
-        assertThat(e.getStatus()).isEqualTo(HttpStatus.CONFLICT);
+        assertThat(e.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
     }
 
     @Test
     void reviewsOnlyExistingProducts() {
         ResponseStatusException e = catchThrowableOfType(
             () -> reviews.add(999_999L, ada, 5, null), ResponseStatusException.class);
-        assertThat(e.getStatus()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThat(e.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 }

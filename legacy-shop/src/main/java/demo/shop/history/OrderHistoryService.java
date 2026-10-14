@@ -1,6 +1,6 @@
 package demo.shop.history;
 
-import com.corp.commons.util.CorpLogger;
+import com.corp.commons.core.CorpLog;
 import demo.shop.order.OrderPaidEvent;
 import demo.shop.order.OrderPlacedEvent;
 import demo.shop.order.OrderShippedEvent;
@@ -19,7 +19,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class OrderHistoryService {
-    private static final CorpLogger log = CorpLogger.getLogger(OrderHistoryService.class);
+    private static final CorpLog log = CorpLog.getLogger(OrderHistoryService.class);
 
     private final HistoryRepository history;
 

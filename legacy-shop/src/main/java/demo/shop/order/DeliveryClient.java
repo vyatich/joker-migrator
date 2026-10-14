@@ -1,9 +1,9 @@
 package demo.shop.order;
 
-import com.corp.commons.util.CorpConfig;
-import com.corp.commons.util.CorpContext;
-import com.corp.commons.util.CorpHttpClient;
-import com.corp.commons.util.CorpLogger;
+import com.corp.commons.core.CorpConfig;
+import com.corp.commons.core.CorpContext;
+import com.corp.commons.core.CorpHttpClient;
+import com.corp.commons.core.CorpLog;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -17,12 +17,12 @@ import java.math.BigDecimal;
 public class DeliveryClient {
     static final BigDecimal FLAT_RATE = new BigDecimal("4.99");
 
-    private static final CorpLogger log = CorpLogger.getLogger(DeliveryClient.class);
+    private static final CorpLog log = CorpLog.getLogger(DeliveryClient.class);
 
     private final CorpHttpClient http;
 
     public DeliveryClient() {
-        CorpConfig config = CorpContext.current().getConfig();
+        CorpConfig config = CorpContext.current().config();
         this.http = new CorpHttpClient(
             config.getString("shop.delivery.base-url", "http://localhost:8081"),
             config.getLong("shop.delivery.timeout-ms", 2000));

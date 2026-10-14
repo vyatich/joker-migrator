@@ -1,8 +1,8 @@
 package demo.shop.inventory;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Version;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Version;
 
 /**
  * Stock of one product: what can still be ordered and what is held by placed orders.

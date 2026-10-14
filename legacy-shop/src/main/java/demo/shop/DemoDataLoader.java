@@ -10,7 +10,7 @@ import demo.shop.promo.PromoCode;
 import demo.shop.promo.PromoCodeRepository;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 

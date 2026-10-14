@@ -1,7 +1,7 @@
 package demo.shop.order;
 
-import com.corp.commons.util.CorpContext;
-import com.corp.commons.util.CorpLogger;
+import com.corp.commons.core.CorpContext;
+import com.corp.commons.core.CorpLog;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -9,12 +9,12 @@ import java.math.RoundingMode;
 
 @Service
 public class PricingService {
-    private static final CorpLogger log = CorpLogger.getLogger(PricingService.class);
+    private static final CorpLog log = CorpLog.getLogger(PricingService.class);
 
     private final int discountPercent;
 
     public PricingService() {
-        this(CorpContext.current().getConfig().getInt("shop.discount.percent", 0));
+        this(CorpContext.current().config().getInt("shop.discount.percent", 0));
     }
 
     PricingService(int discountPercent) {

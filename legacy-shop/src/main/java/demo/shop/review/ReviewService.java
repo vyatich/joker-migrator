@@ -1,6 +1,6 @@
 package demo.shop.review;
 
-import com.corp.commons.util.CorpLogger;
+import com.corp.commons.core.CorpLog;
 import demo.shop.customer.CustomerRepository;
 import demo.shop.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class ReviewService {
-    private static final CorpLogger log = CorpLogger.getLogger(ReviewService.class);
+    private static final CorpLog log = CorpLog.getLogger(ReviewService.class);
 
     private final ReviewRepository reviews;
     private final ProductRepository products;

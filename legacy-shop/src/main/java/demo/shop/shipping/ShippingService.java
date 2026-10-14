@@ -1,6 +1,6 @@
 package demo.shop.shipping;
 
-import com.corp.commons.util.CorpLogger;
+import com.corp.commons.core.CorpLog;
 import demo.shop.inventory.InventoryService;
 import demo.shop.order.Order;
 import demo.shop.order.OrderService;
@@ -18,7 +18,7 @@ import java.time.Instant;
 @RequiredArgsConstructor
 @Transactional
 public class ShippingService {
-    private static final CorpLogger log = CorpLogger.getLogger(ShippingService.class);
+    private static final CorpLog log = CorpLog.getLogger(ShippingService.class);
 
     private final OrderService orders;
     private final InventoryService inventory;

@@ -3,6 +3,7 @@ package demo.shop.web;
 import demo.shop.api.model.ErrorDto;
 import demo.shop.inventory.InsufficientStockException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -20,7 +21,7 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<ErrorDto> handleStatus(ResponseStatusException e) {
-        HttpStatus status = e.getStatus();
+        HttpStatusCode status = e.getStatusCode();
         return error(status, e.getReason() == null ? status.getReasonPhrase() : e.getReason());
     }
 
@@ -42,7 +43,7 @@ public class ApiExceptionHandler {
         return error.getField() + ": " + error.getDefaultMessage();
     }
 
-    private static ResponseEntity<ErrorDto> error(HttpStatus status, String message) {
+    private static ResponseEntity<ErrorDto> error(HttpStatusCode status, String message) {
         return ResponseEntity.status(status).body(new ErrorDto().status(status.value()).message(message));
     }
 }

@@ -1,7 +1,7 @@
 package demo.shop.promo;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import java.util.regex.Pattern;
 
 public class PromoCodeFormatValidator implements ConstraintValidator<PromoCodeFormat, String> {

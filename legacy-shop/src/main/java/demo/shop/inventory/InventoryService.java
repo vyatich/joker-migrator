@@ -1,6 +1,6 @@
 package demo.shop.inventory;
 
-import com.corp.commons.util.CorpLogger;
+import com.corp.commons.core.CorpLog;
 import demo.shop.product.ProductRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -10,7 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 @Transactional
 public class InventoryService {
-    private static final CorpLogger log = CorpLogger.getLogger(InventoryService.class);
+    private static final CorpLog log = CorpLog.getLogger(InventoryService.class);
 
     private final StockRepository stock;
     private final ProductRepository products;
