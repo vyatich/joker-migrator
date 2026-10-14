@@ -7,6 +7,7 @@ import com.corp.commons.core.CorpLog;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.math.BigDecimal;
 
 /**
@@ -25,7 +26,7 @@ public class PaymentClient {
         CorpConfig config = CorpContext.current().config();
         this.http = new CorpHttpClient(
             config.getString("shop.payment.base-url", "http://localhost:8082"),
-            config.getLong("shop.payment.timeout-ms", 3000));
+            Duration.ofMillis(config.getLong("shop.payment.timeout-ms", 3000)));
         this.fake = Boolean.parseBoolean(config.getString("shop.payment.fake", "false"));
         this.fakeLimit = new BigDecimal(config.getString("shop.payment.fake-limit", "10000"));
     }
@@ -40,7 +41,7 @@ public class PaymentClient {
             String answer = http.get("/authorize?order=" + orderId + "&amount=" + amount.toPlainString());
             return "APPROVED".equals(answer.trim());
         } catch (IOException e) {
-            log.warn("Payment service did not answer within {} ms: {}", http.getTimeoutMillis(), e.getMessage());
+            log.warn("Payment service did not answer within {} ms: {}", http.getTimeout().toMillis(), e.getMessage());
             return false;
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();

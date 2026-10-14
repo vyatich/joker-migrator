@@ -22,7 +22,7 @@ public class ApiExceptionHandler {
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<ErrorDto> handleStatus(ResponseStatusException e) {
         HttpStatusCode status = e.getStatusCode();
-        return error(status, e.getReason() == null ? status.getReasonPhrase() : e.getReason());
+        return error(status, e.getReason() == null ? (status instanceof HttpStatus known ? known.getReasonPhrase() : String.valueOf(status.value())) : e.getReason());
     }
 
     @ExceptionHandler(InsufficientStockException.class)

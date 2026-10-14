@@ -32,8 +32,8 @@ public class RequestLoggingFilter extends OncePerRequestFilter {
         MDC.put("correlationId", correlationId);
         response.setHeader(HEADER, correlationId);
         try {
-            HttpMethod method = HttpMethod.resolve(request.getMethod());
-            if (method != null && changesData(method)) {
+            HttpMethod method = HttpMethod.valueOf(request.getMethod());
+            if (changesData(method)) {
                 log.info("{} {} [{}]", method, request.getRequestURI(), correlationId);
             }
             chain.doFilter(request, response);
@@ -43,14 +43,7 @@ public class RequestLoggingFilter extends OncePerRequestFilter {
     }
 
     static boolean changesData(HttpMethod method) {
-        switch (method) {
-            case POST:
-            case PUT:
-            case PATCH:
-            case DELETE:
-                return true;
-            default:
-                return false;
-        }
+        return method.equals(HttpMethod.POST) || method.equals(HttpMethod.PUT)
+            || method.equals(HttpMethod.PATCH) || method.equals(HttpMethod.DELETE);
     }
 }

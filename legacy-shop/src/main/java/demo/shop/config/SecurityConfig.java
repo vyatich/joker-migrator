@@ -26,7 +26,6 @@ public class SecurityConfig {
     }
 
     @Bean
-    @Override
     public UserDetailsService userDetailsService() {
         return new InMemoryUserDetailsManager(
             User.withDefaultPasswordEncoder().username("user").password("password").roles("USER").build());

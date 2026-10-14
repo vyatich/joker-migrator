@@ -2,7 +2,6 @@ package demo.shop.order;
 
 import com.corp.commons.core.CorpLog;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.CompletableFuture;
@@ -17,6 +16,6 @@ public class NotificationSender {
     @Async
     public CompletableFuture<Boolean> send(long customerId, String text) {
         log.info("Notify customer {}: {}", customerId, text);
-        return AsyncResult.forValue(Boolean.TRUE);
+        return CompletableFuture.completedFuture(Boolean.TRUE);
     }
 }

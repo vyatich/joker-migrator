@@ -23,9 +23,13 @@ public class OrderNotifications {
     @TransactionalEventListener
     public void onOrderPlaced(OrderPlacedEvent event) {
         String text = "order " + event.getOrderId() + " placed, total " + event.getTotal();
-        sender.send(event.getCustomerId(), text).addCallback(
-            delivered -> log.info("Notification for order {} delivered: {}", event.getOrderId(), delivered),
-            failure -> log.error("Notification for order " + event.getOrderId() + " failed", failure));
+        sender.send(event.getCustomerId(), text).whenComplete((delivered, failure) -> {
+            if (failure == null) {
+                log.info("Notification for order {} delivered: {}", event.getOrderId(), delivered);
+            } else {
+                log.error("Notification for order " + event.getOrderId() + " failed", failure);
+            }
+        });
         sent.incrementAndGet();
     }
 
