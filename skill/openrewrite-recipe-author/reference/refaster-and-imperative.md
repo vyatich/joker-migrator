@@ -21,6 +21,12 @@ dependencies {
 
 Take the versions from Maven Central (see the version lookup in `openrewrite-migrate/reference/recipe-catalog.md`). The Java parser module must match a JDK the tests run on.
 
+Things that cost time on the first build:
+
+- `rewrite-recipe-bom` can reference a core `rewrite-bom` version that is not on Maven Central yet. If the import fails, import `org.openrewrite:rewrite-bom` with a published version directly and pin the recipe modules you use (`rewrite-java-dependencies`, `rewrite-migrate-java`).
+- `rewrite-test` brings its own JUnit Platform; a different `junit-jupiter` version makes Surefire fail before any test runs (`NoClassDefFoundError: org/junit/platform/...`). Use the version `mvn dependency:tree` shows for `junit-jupiter-api`.
+- The recipe runs on the users' code **before** the upgrade, so their code is type-attributed against the **old** library. Put the old library on the recipe's runtime classpath and give templates `JavaParser.fromJavaVersion().classpath("<old artifact>")`. Code that exists only in the new API can still be generated as text (its types stay unknown); often the old version already has the new style (Jackson 2.12+ has `JsonMapper.builder()`), and the package change later in the composite moves it.
+
 ## Refaster template
 
 One expression in, one expression out, with types checked. Example for a fictional `legacy-lib` whose `Client(String url, long timeoutMillis)` became `Client(String url, Duration timeout)`:
@@ -47,6 +53,12 @@ Old and new API in one template: both versions of the library must be on the com
 
 A `Recipe` with a `JavaIsoVisitor` — for changes that depend on surrounding code. Keep each recipe small and focused; reuse `JavaTemplate` for the code you insert, and call `maybeAddImport` / `maybeRemoveImport` instead of editing imports by hand.
 
+- Guard the visitor with `Preconditions.check(new UsesType<>("<old package>..*", true), ...)` so files that do not use the library are skipped.
+- A `JavaTemplate` applies at the cursor it is given: to replace a whole call chain, pass the chain's coordinates, not those of the expression inside it.
+- When you replace a type in a tree by hand (`J.Identifier` for a catch type), set the type on the variables too, or `maybeRemoveImport` keeps the old import. It also keeps imports that are "used" only through method type information (thrown exceptions of old-API methods); remove those with `new RemoveImport<>(fqn, true)` after checking that no identifier names the type.
+- Visit `J.MemberReference` as well as `J.MethodInvocation` when a method is renamed or replaced (`node::fields`).
+- Make every rewrite idempotent: the recipe runs in cycles until nothing changes; `x.values()` → `x.values().iterator()` must not fire again on its own output.
+
 ## Tests
 
 ```java
@@ -72,3 +84,5 @@ class ClientTimeoutToDurationTest implements RewriteTest {
 ```
 
 Use the before/after examples from migration reports as test cases — they are real code. Always add at least one case that must stay unchanged.
+
+If the expected output references types that are not on the test classpath (new-API code generated as text), relax type validation for that test: `spec.typeValidationOptions(TypeValidation.none())`. Keep it on everywhere else — it catches templates that lost their types.

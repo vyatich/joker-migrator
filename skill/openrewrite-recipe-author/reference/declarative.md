@@ -50,6 +50,14 @@ Order matters: after `ChangePackage` the old class lives in the new package, so 
 | Annotation replaced | `org.openrewrite.java.ChangeAnnotationAttributeName`, `org.openrewrite.java.ReplaceAnnotation` |
 | Dependency coordinates changed | `org.openrewrite.java.dependencies.ChangeDependency` |
 | Property key renamed | `org.openrewrite.properties.ChangePropertyKey`, `org.openrewrite.yaml.ChangePropertyKey` |
+| Constant or enum value moved to another class | `org.openrewrite.java.ReplaceConstantWithAnotherConstant` |
+| Constant replaced by a method call (`EMPTY_LIST` → `emptyList()`) | `org.openrewrite.java.ChangeStaticFieldToMethod` |
+| Interface removed, its methods moved to the base class | `org.openrewrite.java.RemoveImplements` |
+| Dependency removed (functionality now built in) | `org.openrewrite.java.dependencies.RemoveDependency` |
+| BOM coordinates changed | `org.openrewrite.maven.ChangeManagedDependencyGroupIdAndArtifactId` (check that no module relied on the old BOM for versions) |
+| Java baseline raised | `org.openrewrite.java.migrate.UpgradeJavaVersion` (from `rewrite-migrate-java`; verify with a real build, see `pitfalls.md`) |
+
+`ApiDiff` writes ready entries for the first rows: `safe-types.yml`, `safe-constants.yml` (and candidates in `review-renames.yml`).
 
 Check the exact name and options of each one in the OpenRewrite recipe catalog (`https://docs.openrewrite.org/recipes`) before using it — options change between versions.
 
